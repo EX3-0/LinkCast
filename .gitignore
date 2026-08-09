@@ -11,3 +11,4 @@ captures/
 !.env.example
 .android-sdk/
 .downloads/
+dist/
