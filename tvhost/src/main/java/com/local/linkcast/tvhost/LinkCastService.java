@@ -34,7 +34,7 @@ public final class LinkCastService extends Service {
     private NsdManager nsd;
     private NsdManager.RegistrationListener registration;
     private WifiManager.MulticastLock multicastLock;
-    private String registeredName;
+    private static volatile String registeredName;
     private static volatile boolean running;
     private static volatile String lastError;
 
