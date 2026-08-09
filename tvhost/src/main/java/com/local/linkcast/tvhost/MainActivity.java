@@ -170,7 +170,7 @@ public final class MainActivity extends Activity
                 root.addView(view, new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
-                setImmersive(true);
+                applyImmersiveMode(true);
             }
 
             @Override
@@ -247,7 +247,7 @@ public final class MainActivity extends Activity
         lastRequestedUrl = url;
         homePanel.setVisibility(View.GONE);
         webView.setVisibility(View.VISIBLE);
-        setImmersive(true);
+        applyImmersiveMode(true);
         webView.loadUrl(url);
         webView.requestFocus();
     }
@@ -310,7 +310,7 @@ public final class MainActivity extends Activity
         } else if (webView.getVisibility() == View.VISIBLE) {
             webView.setVisibility(View.GONE);
             homePanel.setVisibility(View.VISIBLE);
-            setImmersive(false);
+            applyImmersiveMode(false);
         } else {
             super.onBackPressed();
         }
@@ -326,10 +326,10 @@ public final class MainActivity extends Activity
             customViewCallback.onCustomViewHidden();
             customViewCallback = null;
         }
-        setImmersive(true);
+        applyImmersiveMode(true);
     }
 
-    private void setImmersive(boolean enabled) {
+    private void applyImmersiveMode(boolean enabled) {
         if (!enabled) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             return;
