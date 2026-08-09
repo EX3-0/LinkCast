@@ -24,16 +24,22 @@ final class HttpHost {
     private static final int MAX_BODY_BYTES = 8192;
 
     private final int port;
+    interface CommandListener {
+        void onCommand(String url);
+    }
+
     private final String token;
+    private final CommandListener commandListener;
     private final ExecutorService clients = Executors.newCachedThreadPool();
     private final Object commandLock = new Object();
     private volatile boolean active;
     private volatile ServerSocket server;
     private String pendingUrl;
 
-    HttpHost(int port, String token) {
+    HttpHost(int port, String token, CommandListener commandListener) {
         this.port = port;
         this.token = token;
+        this.commandListener = commandListener;
     }
 
     void start() throws IOException {
@@ -112,6 +118,11 @@ final class HttpHost {
                 synchronized (commandLock) {
                     pendingUrl = url;
                     commandLock.notifyAll();
+                }
+                try {
+                    commandListener.onCommand(url);
+                } catch (RuntimeException error) {
+                    Log.w(TAG, "Could not deliver browser command", error);
                 }
                 respond(connection, 202, "Accepted", "Queued", "text/plain");
                 return;
